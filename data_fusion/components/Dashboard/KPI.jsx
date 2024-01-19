@@ -16,8 +16,8 @@ function KPI() {
     <div className="mt-8">
       <div className="flex justify-between px-2 space-x-2">
         {KPIdata.map((kpi, index) => (
-          <div key={index} className={`w-[200px] h-[100px] cursor-pointer border border-purple-200 ${kpi.bgColor} hover:shadow-md rounded-lg`}>
-            <div className="flex flex-col flex-wrap gap-y-2 justify-center items-center h-full">
+          <div key={index} className={`w-[200px] h-[100px] cursor-pointer border ${kpi.bgColor} hover:shadow-md rounded-lg`}>
+            <div className="flex flex-col flex-wrap gap-y-3 justify-center items-center h-full">
               <div className="text-2xl font-bold text-slate-900">
                 <h5>{kpi.value}</h5>
               </div>

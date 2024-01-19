@@ -2,8 +2,7 @@ import { backEnd } from "@/features/AuthSlice";
 import { salesData } from "@/helper/backEndFunction";
 import React, { useState, useEffect, useRef } from "react";
 import CreateSaleModal from "./CreateSaleModal";
-import Spinner from "../../Spinner";
-import { FaEllipsisVertical, FaFilter, FaPlus } from "react-icons/fa6";
+import Spinner from "../Spinner";
 
 function SalesTable() {
   // Example data - replace with your actual data source
@@ -24,7 +23,6 @@ function SalesTable() {
   const columns = ["date", "product_category", "product_name", "actual_sales", "actual_units", "doc_name"]; // Columns
 
   useEffect(() => {
-    console.log("salesData", salesData);
     const fetchData = async () => {
       try {
         setIsLoading(true); // Start loading
@@ -88,77 +86,63 @@ function SalesTable() {
   return (
     <>
       <div className="mx-2 mt-10 shadow-lg">
-        <div className="text-center text-2xl font-semibold p-2 bg-slate-800 text-white border rounded-lg">Sales Table</div>
-        <div className="flex gap-x-5">
-          <button onClick={openModal} className="p-2 bg-purple-300  border border-gray-100 rounded-xl w-fit mt-2 mb-2 ml-2 hover:bg-blue-100">
-            <div className="flex items-center gap-x-1">
-              <FaPlus className="text-lg text-white" /> <span className="text-slate-900 font-semibold">New sale</span>
-            </div>
-          </button>
-
-          <button onClick={openModal} className="p-2 bg-purple-300  border border-gray-100 rounded-xl w-fit mt-2 mb-2 ml-2 hover:bg-blue-100">
-            <div className="flex items-center gap-x-1">
-              <FaPlus className="text-lg text-white" /> <span className="text-slate-900 font-semibold">New Product</span>
-            </div>
-          </button>
-        </div>
-
+        <div className="text-center text-2xl font-semibold p-4 bg-blue-500 text-white">Sales Table</div>
+        <button onClick={openModal} className="p-2 bg-green-100 border border-gray-200 rounded-xl w-fit mt-2 mb-2 ml-2 hover:bg-blue-100">
+          + add new sale
+        </button>
         <div className="">
           <table className="min-w-full leading-normal">
             <thead className="sticky top-0 bg-white">
               <tr className="bg-blue-100">
                 {columns.map((column) => (
                   <th key={column} className="px-5 py-3 border-b-2 border-gray-200 text-gray-800 text-left text-sm uppercase font-semibold text-center ">
-                    <div className="flex justify-center items-center gap-x-2">
-                      <div className="text-slate-900 font-bold"> {column.replace("_", " ").toUpperCase()}</div>
-                      <span className="cursor-pointer">
-                        <FaFilter className="text-gray-500 text-xs" />
-                      </span>
-                    </div>
+                    {column.replace("_", " ").toUpperCase()}
                   </th>
                 ))}
               </tr>
             </thead>
-
-            <tbody>
-              {isLoading ? (
-                <tr>
-                  <td colSpan={columns.length} className="text-center py-5">
-                    <Spinner aria-label="Loading..." /> <p>Loading data, please wait...</p>
-                  </td>
-                </tr>
-              ) : (
-                data.map((row, rowIndex) => (
-                  <tr key={rowIndex} className="max-h-[500px] overflow-y-auto">
-                    {columns.map((column) => (
-                      <td key={column} className={`px-3 py-5 border-b border-gray-200 bg-white text-sm cursor-pointer`}>
-                        {column !== "doc_name" ? (
-                          <div className="flex space-x-3">
-                            <input type="text" value={row[column]} onChange={(e) => handleCellChange(e, rowIndex, column)} className="w-full bg-transparent p-2 border border-white text-center" />
-                            {editedCells[`${rowIndex}-${column}`] && (
-                              <div className="flex space-x-2">
-                                <button className="bg-red-500 px-1 border rounded-xl" onClick={() => resetCellEditState(rowIndex, column)}>
-                                  X
-                                </button>
-                                <button onClick={() => validateCellEditState(rowIndex, column)} className="bg-green-500 px-1 border rounded-xl">
-                                  V
-                                </button>
-                              </div>
-                            )}
-                          </div>
-                        ) : (
-                          <div className="flex gap-x-5 justify-center items-center">
-                            <div>{row[column]}</div>
-                            <FaEllipsisVertical className="text-slate-900 cursor-pointer" />
-                          </div>
-                        )}
-                      </td>
-                    ))}
-                  </tr>
-                ))
-              )}
-            </tbody>
           </table>
+          <div className="max-h-[1000px] overflow-y-auto">
+            <table className="min-w-full leading-normal">
+              <tbody>
+                {isLoading ? (
+                  <tr>
+                    <td colSpan={columns.length} className="text-center py-5">
+                      <Spinner aria-label="Loading..." /> <p>Loading data, please wait...</p>
+                    </td>
+                  </tr>
+                ) : (
+                  data.map((row, rowIndex) => (
+                    <tr key={rowIndex} className="hover:bg-gray-100">
+                      {columns.map((column) => (
+                        <td key={column} className={`px-3 py-5 border-b border-gray-200 bg-white text-sm`}>
+                          {column !== "doc_name" ? (
+                            <>
+                              <div className="flex items-center space-x-3">
+                                <input type="text" value={row[column]} onChange={(e) => handleCellChange(e, rowIndex, column)} className="w-full bg-transparent p-2 text-center border border-white" />
+                                {editedCells[`${rowIndex}-${column}`] && (
+                                  <div className="flex space-x-2">
+                                    <button className="bg-red-500 px-1 border rounded-xl" onClick={() => resetCellEditState(rowIndex, column)}>
+                                      X
+                                    </button>
+                                    <button onClick={() => validateCellEditState(rowIndex, column)} className="bg-green-500 px-1 border rounded-xl">
+                                      V
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
+                            </>
+                          ) : (
+                            row[column]
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
       {isModalOpen && <CreateSaleModal setModalOpen={setIsModalOpen} />}
