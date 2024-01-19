@@ -1,4 +1,5 @@
 import React from "react";
+import FileInput from "../FileInput";
 
 function CreateSaleModal({ setModalOpen }) {
   const closeModal = () => {
@@ -21,8 +22,10 @@ function CreateSaleModal({ setModalOpen }) {
           <h4 className="semi-bold text-md text-blue-900">Unites</h4>
         </div>
 
-        <div className="px-5 flex justify-end">
-          <button className="px-3 py-1 bg-red-700 text-white rounded" onClick={closeModal}>
+        <FileInput />
+
+        <div className="px-5 flex justify-center">
+          <button className="px-3 py-1 bg-green-500 text-white rounded" onClick={closeModal}>
             Save
           </button>
         </div>

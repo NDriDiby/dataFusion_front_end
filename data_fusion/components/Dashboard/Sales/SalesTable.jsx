@@ -2,7 +2,7 @@ import { backEnd } from "@/features/AuthSlice";
 import { salesData } from "@/helper/backEndFunction";
 import React, { useState, useEffect, useRef } from "react";
 import CreateSaleModal from "./CreateSaleModal";
-import Spinner from "./Spinner";
+import Spinner from "../../Spinner";
 
 function SalesTable() {
   // Example data - replace with your actual data source
@@ -28,7 +28,7 @@ function SalesTable() {
         setIsLoading(true); // Start loading
         const response = await backEnd.get("/sales/");
         setData(response.data);
-        originalDataRef.current = [...response.data];
+        originalDataRef.current = JSON.parse(JSON.stringify(response.data)); // Deep copy
       } catch (error) {
         console.log("Error in getting sales data", error);
         // Optionally set an error state here
@@ -39,13 +39,6 @@ function SalesTable() {
 
     fetchData();
   }, []);
-
-  //   const [data, setData] = useState([
-  //     { date: "01/10/2023", category: "Category 1", product: "Product 1", sales: "$300", units: "10" },
-  //     { date: "01/16/2023", category: "Category 1", product: "Product 1", sales: "$150", units: "10" },
-  //     { date: "01/19/2023", category: "Category 1", product: "Product 1", sales: "$100", units: "10" },
-  //     // ... other rows
-  //   ]);
 
   // Modify this function to update editedCells state
   const handleCellChange = (e, rowIndex, column) => {
@@ -60,15 +53,34 @@ function SalesTable() {
   };
 
   const resetCellEditState = (rowIndex, column) => {
-    // Revert the data to the original value
+    // Retrieve the original value for the specific cell
+    const originalValue = originalDataRef.current[rowIndex][column];
+    // Create a new copy of the current data
     const newData = [...data];
-    newData[rowIndex][column] = originalDataRef.current[rowIndex][column];
+
+    // Update the specific cell with its original value
+    newData[rowIndex][column] = originalValue;
+
+    // Set the updated data array as the new state
     setData(newData);
 
     // Remove the cell from the editedCells state
     const newEditedCells = { ...editedCells };
     delete newEditedCells[`${rowIndex}-${column}`];
     setEditedCells(newEditedCells);
+  };
+
+  const validateCellEditState = (rowIndex, column) => {
+    // Assuming the current data already has the updated value,
+    // Update the original data reference to consider the new value as the original
+    originalDataRef.current[rowIndex][column] = data[rowIndex][column];
+
+    // Update the editedCells state to no longer mark this cell as edited
+    const newEditedCells = { ...editedCells };
+    delete newEditedCells[`${rowIndex}-${column}`];
+    setEditedCells(newEditedCells);
+
+    // There is no need to call setData here if data already contains the updated value
   };
 
   return (
@@ -90,7 +102,7 @@ function SalesTable() {
               </tr>
             </thead>
           </table>
-          <div className="max-h-[1000px] overflow-y-auto">
+          <div className="max-h-[500px] overflow-y-auto">
             <table className="min-w-full leading-normal">
               <tbody>
                 {isLoading ? (
@@ -103,18 +115,22 @@ function SalesTable() {
                   data.map((row, rowIndex) => (
                     <tr key={rowIndex} className="hover:bg-gray-100">
                       {columns.map((column) => (
-                        <td key={column} className={`relative px-3 py-5 border-b border-gray-200 bg-white text-sm`}>
+                        <td key={column} className={`px-3 py-5 border-b border-gray-200 bg-white text-sm`}>
                           {column !== "doc_name" ? (
                             <>
-                              <input type="text" value={row[column]} onChange={(e) => handleCellChange(e, rowIndex, column)} className="w-full bg-transparent p-2 text-center" />
-                              {editedCells[`${rowIndex}-${column}`] && (
-                                <div className="absolute top-0 right-0 space-x-2">
-                                  <button className="bg-red-500 px-1 border rounded-xl" onClick={() => resetCellEditState(rowIndex, column)}>
-                                    X
-                                  </button>
-                                  <button className="bg-green-500 px-2 border rounded-xl p-1">Check</button>
-                                </div>
-                              )}
+                              <div className="flex items-center space-x-3">
+                                <input type="text" value={row[column]} onChange={(e) => handleCellChange(e, rowIndex, column)} className="w-full bg-transparent p-2 text-center border border-white" />
+                                {editedCells[`${rowIndex}-${column}`] && (
+                                  <div className="flex space-x-2">
+                                    <button className="bg-red-500 px-1 border rounded-xl" onClick={() => resetCellEditState(rowIndex, column)}>
+                                      X
+                                    </button>
+                                    <button onClick={() => validateCellEditState(rowIndex, column)} className="bg-green-500 px-1 border rounded-xl">
+                                      V
+                                    </button>
+                                  </div>
+                                )}
+                              </div>
                             </>
                           ) : (
                             row[column]
