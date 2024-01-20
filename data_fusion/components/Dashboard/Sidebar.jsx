@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React from "react";
 import { useRouter } from "next/router";
-import { FaSalesforce, FaRegMoneyBillAlt, FaUsers, FaCog, FaBox } from "react-icons/fa";
+import { FaSalesforce, FaRegMoneyBillAlt, FaUsers, FaCog, FaBox, FaFileInvoiceDollar, FaHome } from "react-icons/fa";
 import { FaClipboardUser, FaCircleQuestion } from "react-icons/fa6";
 import { ImPowerCord } from "react-icons/im";
 
@@ -15,6 +15,12 @@ function Sidebar({ sidebarOpen }) {
       {/* <div className="flex justify-center items-center text-xl text-white pt-2">Data Fusion</div> */}
 
       <div className="flex flex-col gap-y-4 pt-6 p-5">
+        <Link href="/dashboard/business-view" className={`flex text-white text-lg gap-x-3 items-center   ${pathName == "/dashboard/business-view" ? "rounded-full" : ""}`}>
+          <div className={`rounded-full p-2 ${pathName == "/dashboard/business-view" ? "bg-purple-300" : ""}`}>
+            <FaHome />
+          </div>
+          {sidebarOpen && <span className="hover:text-purple-300">Dashboard</span>}
+        </Link>
         <Link href="/dashboard/home" className={`flex text-white text-lg gap-x-3 items-center   ${pathName == "/dashboard/home" ? "rounded-full" : ""}`}>
           <div className={`rounded-full p-2 ${pathName == "/dashboard/home" ? "bg-purple-300" : ""}`}>
             <FaSalesforce />
@@ -25,7 +31,13 @@ function Sidebar({ sidebarOpen }) {
           <div className={`rounded-full p-2 ${pathName == "/budget/home" ? "bg-purple-300 p-2" : ""}`}>
             <FaRegMoneyBillAlt />
           </div>
-          {sidebarOpen && <span className="hover:text-purple-300">Budget</span>}
+          {sidebarOpen && <span className="hover:text-purple-300">Budgets</span>}
+        </Link>
+        <Link href="#" className={`flex text-white text-lg gap-x-3 items-center ${pathName == "#" ? "rounded-full" : ""}`}>
+          <div className={`rounded-full p-2 ${pathName == "#" ? "bg-purple-300 p-2" : ""}`}>
+            <FaFileInvoiceDollar />
+          </div>
+          {sidebarOpen && <span className="hover:text-purple-300">Expenses</span>}
         </Link>
         <Link href="/budget/home" className="flex text-white text-lg gap-x-3 items-center">
           <div className={`rounded-full p-2 ${pathName == "" ? "bg-purple-300 p-2" : ""}`}>
