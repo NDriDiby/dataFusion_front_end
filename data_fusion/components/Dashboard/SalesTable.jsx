@@ -122,7 +122,7 @@ function SalesTable() {
                                 <input type="text" value={row[column]} onChange={(e) => handleCellChange(e, rowIndex, column)} className="w-full bg-transparent p-2 text-center border border-white" />
                                 {editedCells[`${rowIndex}-${column}`] && (
                                   <div className="flex space-x-2">
-                                    <button className="bg-red-500 px-1 border rounded-xl" onClick={() => resetCellEditState(rowIndex, column)}>
+                                    <button className="bg-red-500 px-1 w-4 h-4 border rounded-xl" onClick={() => resetCellEditState(rowIndex, column)}>
                                       X
                                     </button>
                                     <button onClick={() => validateCellEditState(rowIndex, column)} className="bg-green-500 px-1 border rounded-xl">

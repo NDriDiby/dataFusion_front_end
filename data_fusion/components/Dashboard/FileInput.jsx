@@ -19,19 +19,26 @@ const FileInput = () => {
           <input
             type="text"
             placeholder="File Name"
-            className="w-42 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-black"
+            className="w-42 px-3 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring focus:border-black"
             value={fileName}
             onChange={(e) => setFileName(e.target.value)}
             required
           />
 
-          <label className="bg-blue-500 text-white py-2 px-4 rounded cursor-pointer hover:bg-blue-600">
-            Select File
-            <input type="file" className="hidden" onChange={handleFileChange} />
+          <label className="block cursor-pointer">
+            <input
+              type="file"
+              className="cursor-pointer block w-full text-sm text-slate-500
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-full file:border-0
+                file:text-sm file:font-semibold
+                file:bg-violet-50 file:text-violet-700
+                hover:file:bg-violet-100
+              "
+              onChange={handleFileChange}
+            />
           </label>
         </div>
-
-        <div className="pt-3 ml-[75px] text-lg w-50">File: {file}</div>
       </div>
     </div>
   );

@@ -42,3 +42,14 @@ export const createSalesData = async () => {
     return { success: false, error: error.response.data };
   }
 };
+
+export const deleteSalesData = async ({ salesID }) => {
+  try {
+    const response = await backEnd.delete(`/sales/${salesID}`);
+    console.log("Sales", response.data);
+    return response.data;
+  } catch (error) {
+    console.log("Error in getting sales data", error.response.data);
+    return { success: false, error: error.response.data };
+  }
+};

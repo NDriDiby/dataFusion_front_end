@@ -13,7 +13,8 @@ function KPI() {
   ];
 
   return (
-    <div className="mt-8">
+    <div className="mt-6">
+      <div className="flex justify-start ml-2 text-md text-slate-900 font-extrabold mb-5">Key Performance Indicator</div>
       <div className="flex justify-between px-2 space-x-2">
         {KPIdata.map((kpi, index) => (
           <div key={index} className={`w-[200px] h-[100px] cursor-pointer border border-purple-200 ${kpi.bgColor} hover:shadow-md rounded-lg`}>

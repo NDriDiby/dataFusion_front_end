@@ -5,6 +5,11 @@ import axios from "axios";
 const BASE_URL = "http://fullyai.localhost:8000/api/v1";
 export const backEnd = axios.create({ baseURL: BASE_URL });
 
+export const createBackendInstance = (domain) => {
+  const baseURL = `http://${domain}.localhost:8000/api/v1`;
+  return axios.create({ baseURL });
+};
+
 // Async thunk for user registration
 export const login = createAsyncThunk("auth/login", async ({ email, password }, { rejectWithValue }) => {
   try {

@@ -3,15 +3,18 @@ import { salesData } from "@/helper/backEndFunction";
 import React, { useState, useEffect, useRef } from "react";
 import CreateSaleModal from "./CreateSaleModal";
 import Spinner from "../../Spinner";
-import { FaEllipsisVertical, FaFilter, FaPlus } from "react-icons/fa6";
+import { FaEllipsisVertical, FaFilter, FaPlus, FaSquareXmark } from "react-icons/fa6";
+import { Button, Popover, PopoverHandler, PopoverContent } from "@material-tailwind/react";
+import ConfirmationModal from "@/components/ConfirmationModal";
 
-function SalesTable() {
+function SalesTable({ initialSalesData }) {
   // Example data - replace with your actual data source
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(initialSalesData);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalConfirmationOpen, setIsModalConfirmationOpen] = useState(false);
   const [editedCells, setEditedCells] = useState({}); // New state to track edited cells
-  const originalDataRef = useRef([]);
+  const originalDataRef = useRef(initialSalesData);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -24,7 +27,6 @@ function SalesTable() {
   const columns = ["date", "product_category", "product_name", "actual_sales", "actual_units", "doc_name"]; // Columns
 
   useEffect(() => {
-    console.log("salesData", salesData);
     const fetchData = async () => {
       try {
         setIsLoading(true); // Start loading
@@ -81,14 +83,16 @@ function SalesTable() {
     const newEditedCells = { ...editedCells };
     delete newEditedCells[`${rowIndex}-${column}`];
     setEditedCells(newEditedCells);
-
     // There is no need to call setData here if data already contains the updated value
   };
 
   return (
     <>
       <div className="mx-2 mt-10 shadow-lg">
-        <div className="text-center text-2xl font-semibold p-2 bg-slate-800 text-white border rounded-lg">Sales Table</div>
+        <div className="text-center text-2xl font-semibold p-2 bg-slate-800 text-white border rounded-lg">
+          Sales Table
+          <h6 className="text-xs text-gray-400">Last update: Friday, January 19th, 2024</h6>
+        </div>
         <div className="flex gap-x-5">
           <button onClick={openModal} className="p-2 bg-purple-300  border border-gray-100 rounded-xl w-fit mt-2 mb-2 ml-2 hover:bg-blue-100">
             <div className="flex items-center gap-x-1">
@@ -128,7 +132,7 @@ function SalesTable() {
                   </td>
                 </tr>
               ) : (
-                data.map((row, rowIndex) => (
+                data?.map((row, rowIndex) => (
                   <tr key={rowIndex} className="max-h-[500px] overflow-y-auto">
                     {columns.map((column) => (
                       <td key={column} className={`px-3 py-5 border-b border-gray-200 bg-white text-sm cursor-pointer`}>
@@ -149,7 +153,26 @@ function SalesTable() {
                         ) : (
                           <div className="flex gap-x-5 justify-center items-center">
                             <div>{row[column]}</div>
-                            <FaEllipsisVertical className="text-slate-900 cursor-pointer" />
+
+                            <Popover placement="top">
+                              <PopoverHandler>
+                                <Button variant="text">
+                                  <FaEllipsisVertical className="text-slate-900 cursor-pointer" />
+                                </Button>
+                              </PopoverHandler>
+                              <PopoverContent>
+                                <div
+                                  className="cursor-pointer flex items-center gap-x-1"
+                                  onClick={() => {
+                                    setIsModalConfirmationOpen(true);
+                                    console.log(data[rowIndex]["id"]);
+                                  }}
+                                >
+                                  <FaSquareXmark className="text-red-500" />
+                                  <span className="text-xs text-slate-900 font-semibold">Delete Row</span>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
                           </div>
                         )}
                       </td>
@@ -162,6 +185,7 @@ function SalesTable() {
         </div>
       </div>
       {isModalOpen && <CreateSaleModal setModalOpen={setIsModalOpen} />}
+      {isModalConfirmationOpen && <ConfirmationModal setIsModalConfirmationOpen={setIsModalConfirmationOpen} />}
     </>
   );
 }
