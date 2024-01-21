@@ -28,3 +28,5 @@ module.exports = {
 };
 
 // https://www.material-tailwind.com/docs/react/input
+
+// https://www.tremor.so/docs/layout/flex

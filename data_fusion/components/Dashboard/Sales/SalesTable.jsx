@@ -93,18 +93,14 @@ function SalesTable({ initialSalesData }) {
           Sales Table
           <h6 className="text-xs text-gray-400">Last update: Friday, January 19th, 2024</h6>
         </div>
-        <div className="flex gap-x-5">
-          <button onClick={openModal} className="p-2 bg-purple-300  border border-gray-100 rounded-xl w-fit mt-2 mb-2 ml-2 hover:bg-blue-100">
-            <div className="flex items-center gap-x-1">
-              <FaPlus className="text-lg text-white" /> <span className="text-slate-900 font-semibold">New sale</span>
-            </div>
-          </button>
+        <div className="flex gap-x-5 mt-2 ml-2">
+          <Button onClick={openModal} className="p-3 bg-purple-500 mb-2 hover:bg-blue-100 hover:text-slate-900 ">
+            <span className="mr-2">+</span>New Sales
+          </Button>
 
-          <button onClick={openModal} className="p-2 bg-purple-300  border border-gray-100 rounded-xl w-fit mt-2 mb-2 ml-2 hover:bg-blue-100">
-            <div className="flex items-center gap-x-1">
-              <FaPlus className="text-lg text-white" /> <span className="text-slate-900 font-semibold">New Product</span>
-            </div>
-          </button>
+          <Button onClick={openModal} className="p-3 bg-purple-500 mb-2 hover:bg-blue-100 hover:text-slate-900 ">
+            <span className="mr-2">+</span>New product
+          </Button>
         </div>
 
         <div className="">

@@ -51,8 +51,8 @@ function Sidebar({ sidebarOpen }) {
           </div>
           {sidebarOpen && <span className="hover:text-purple-300">Products</span>}
         </Link>
-        <Link href="#" className="flex  text-white text-lg gap-x-3 items-center">
-          <div className={`rounded-full p-2 ${pathName == "" ? "bg-purple-300 p-2" : ""}`}>
+        <Link href="/teams/team-members" className={`flex text-white text-lg gap-x-3 items-center ${pathName == "/teams/team-members" ? "rounded-full" : ""}`}>
+          <div className={`rounded-full p-2 ${pathName == "/teams/team-members" ? "bg-purple-300 p-2" : ""}`}>
             <FaUsers />
           </div>
           {sidebarOpen && <span className="hover:text-purple-300">Teams</span>}
