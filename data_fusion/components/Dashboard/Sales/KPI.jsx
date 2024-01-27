@@ -29,6 +29,7 @@ function KPI() {
                 </div>
               </div>
             </div>
+            {/* <div className="bg-purple-500  h-1 border-t-rounded rounded-lg justify-center"></div> */}
           </div>
         ))}
       </div>
