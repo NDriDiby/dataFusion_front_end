@@ -1,7 +1,7 @@
 import Spinner from "@/components/Spinner";
 import { selectUserEmail } from "@/features/AuthSlice";
-import { verifyOTP } from "@/helper/backEndFunction";
-import React, { useState, useRef } from "react";
+import { sendOTP, verifyOTP } from "@/helper/backEndFunction";
+import React, { useState, useRef, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import AuthLayout from "@/components/Authentication/AuthLayout";
@@ -28,6 +28,35 @@ function Verify() {
   const otp4Ref = useRef(null);
   const otp5Ref = useRef(null);
   const otp6Ref = useRef(null);
+
+  useEffect(() => {
+    const enteredOTP = `${otp1}${otp2}${otp3}${otp4}${otp5}${otp6}`;
+    setErrorMessage("");
+    setOtp(enteredOTP);
+  }, [otp1, otp2, otp3, otp4, otp5, otp6]);
+
+  // const obfuscateEmail = (email) => {
+  //   const [username, domain] = email.split("@");
+  //   if (username.length > 2) {
+  //     const obfuscatedUsername = `${username[0]}${"*".repeat(username.length - 2)}${username[username.length - 1]}`;
+  //     return `${obfuscatedUsername}@${domain}`;
+  //   }
+  //   // Fallback for usernames with 2 characters or less
+  //   return `*${username[username.length - 1]}@${domain}`;
+  // };
+
+  const resendOTP = async () => {
+    try {
+      const data = await sendOTP(userEmail);
+      console.log("OTP sent:", data.data);
+      setErrorMessage(data.data);
+    } catch (error) {
+      console.error("Login error:", error);
+      // Handle login error
+    }
+  };
+
+  // const obfuscatedEmail = obfuscateEmail(userEmail);
 
   const handleInputChange = (value, currentRef, nextRef) => {
     currentRef.current.focus();
@@ -71,6 +100,7 @@ function Verify() {
     const result = await verifyOTP(userEmail, otp);
     if (!result.success) {
       setErrorMessage(result.error);
+      console.log("result.error", result.error);
     } else {
       // Handle success
       setIsOTPValid(true); // Update state based on successful verification
@@ -88,10 +118,13 @@ function Verify() {
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="w-full max-w-sm mx-auto">
-          {errorMessage && <div className="error-message text-center font-semibold text-red-500 p-2">{errorMessage.error || errorMessage.code}</div>}
-          {isOTPValid && <div className="text-green-500 font-semibold text-center p-2">OTP Verified Successfully!</div>}
-          <div className="flex items-center justify-center gap-x-4 mt-3 mb-5">
+        <div>
+          {errorMessage && <div className="error-message text-center font-semibold text-red-500 p-2 mb-3">{errorMessage.error || errorMessage.code || errorMessage.message}</div>}
+          {isOTPValid && <div className="text-green-500 font-semibold text-center p-2 mb-3">OTP Verified Successfully!</div>}
+        </div>
+
+        <form onSubmit={handleSubmit} className="w-full max-w-sm">
+          <div className="flex items-center justify-center gap-x-4 mb-5">
             <input
               ref={otp1Ref}
               data-index="1"
@@ -154,15 +187,17 @@ function Verify() {
             />
           </div>
 
-          <div className="mt-5">
+          <div className="mt-6">
             <button className="w-full py-2  bg-[#394592] text-white rounded-md hover:bg-gray-700">Verify</button>
           </div>
         </form>
 
         <div className="flex justify-center items-center mt-5">
           <div className="flex flex-col">
-            <div className="text-center text-sm text-[#171D1C]">Don't get code?</div>
-            <div className="text-center text-sm text-[#394592] cursor-pointer">Resend code</div>
+            <div className="text-center text-sm text-[#171D1C]">Don&apos;t get code</div>
+            <div onClick={() => resendOTP()} className="text-center text-sm text-[#394592] cursor-pointer">
+              Resend code
+            </div>
           </div>
         </div>
       </div>

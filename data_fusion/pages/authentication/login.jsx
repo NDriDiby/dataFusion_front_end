@@ -75,8 +75,8 @@ function Login() {
                   {errorMessage && <div className="error-message text-center font-semibold text-red-500 p-2">{errorMessage}</div>}
 
                   <form>
-                    <div className="space-y-3">
-                      <div className="mb-5 w-[400px]">
+                    <div className="space-y-3 md:w-[400px] lg:w-[400px] px-2">
+                      <div className="mb-5">
                         <div className="text-sm mb-1 text-[#171D1C]">Email or Phone number</div>
                         <div className="flex items-center border border-[#D9D9D9] rounded-md relative">
                           <FaRegEnvelope className="absolute ml-3 text-gray-400 top-1/2 transform -translate-y-1/2 cursor-pointer" />
@@ -116,7 +116,7 @@ function Login() {
                       </div>
                     </div>
 
-                    <div className="mt-5">
+                    <div className="mt-5 px-2">
                       <button className="w-full py-2 px-4 bg-[#394592] text-white rounded-md hover:bg-gray-700" onClick={handleLogin}>
                         Login
                       </button>
