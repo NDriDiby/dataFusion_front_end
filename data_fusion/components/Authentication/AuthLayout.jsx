@@ -20,7 +20,7 @@ function AuthLayout({ children }) {
           </div>
         ) : (
           <div className="flex justify-center items-center lg:pt-12 ">
-            <Image className="w-auto h-auto" src="/Enter OTP-image.png" width={500} height={100} alt="OTP-image" />
+            <Image src="/Enter OTP-image.png" width={500} height={100} alt="OTP-image" />
           </div>
         )}
         {/* Illustration */}

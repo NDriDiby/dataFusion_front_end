@@ -11,7 +11,7 @@ function Sidebar({ sidebarOpen }) {
   const pathName = router.pathname;
   const sidebarClass = sidebarOpen ? "w-[250px]" : "w-[60px]";
   return (
-    <div className={`bg-slate-900 h-screen transition-all duration-300 ease-in-out  ${sidebarOpen ? "w-[230px]" : "w-[70px]"}`}>
+    <div className={`bg-[#394592] h-screen transition-all duration-300 ease-in-out  ${sidebarOpen ? "w-[230px]" : "w-[70px]"}`}>
       {/* <div className="flex justify-center items-center text-xl text-white pt-2">Data Fusion</div> */}
 
       <div className="flex flex-col gap-y-4 pt-6 p-5">
