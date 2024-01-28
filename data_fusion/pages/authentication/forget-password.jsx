@@ -7,7 +7,7 @@ import { VscKey } from "react-icons/vsc";
 import { MdOutlineRemoveRedEye } from "react-icons/md";
 import { RiEyeCloseLine } from "react-icons/ri";
 
-function forgetPassword() {
+function ForgetPassword() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -144,4 +144,4 @@ function forgetPassword() {
   );
 }
 
-export default forgetPassword;
+export default ForgetPassword;
