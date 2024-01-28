@@ -44,7 +44,7 @@ function Login() {
         }
       } else {
         // Login failed
-        setErrorMessage("Invalid Credentials");
+        setErrorMessage({ error: "Invalid Credentials" });
         console.log("Login failed:", action.error);
         // Handle login failure
         return;
@@ -72,7 +72,13 @@ function Login() {
             ) : (
               <>
                 <div className="">
-                  {errorMessage && <div className="error-message text-center font-semibold text-red-500 p-2">{errorMessage}</div>}
+                  <div>
+                    {errorMessage && (
+                      <div className={`error-message text-center font-semibold p-2 mb-3 ${errorMessage.error || errorMessage.message ? "text-red-500" : "text-green-500"}`}>
+                        {errorMessage.error || errorMessage.message || errorMessage}
+                      </div>
+                    )}
+                  </div>
 
                   <form>
                     <div className="space-y-3 md:w-[400px] lg:w-[400px] px-2">

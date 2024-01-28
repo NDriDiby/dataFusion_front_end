@@ -32,6 +32,17 @@ export const findUser = async (email) => {
   }
 };
 
+export const resetPassword = async (email, password) => {
+  try {
+    const response = await backEnd.post(`/user/forget-password/`, { email, password });
+    return response; // You can return the response or a specific part of it
+  } catch (error) {
+    // Handle error
+    // console.error("Error in sending OTP:", error);
+    throw error; // Re-throw the error if you want the calling function to handle it
+  }
+};
+
 export const salesData = async () => {
   try {
     const response = await backEnd.get("/sales");

@@ -49,7 +49,7 @@ function Verify() {
     try {
       const data = await sendOTP(userEmail);
       console.log("OTP sent:", data.data);
-      setErrorMessage(data.data);
+      setErrorMessage("OTP sent");
     } catch (error) {
       console.error("Login error:", error);
       // Handle login error
@@ -119,9 +119,13 @@ function Verify() {
         </div>
 
         <div>
-          {errorMessage && <div className="error-message text-center font-semibold text-red-500 p-2 mb-3">{errorMessage.error || errorMessage.code || errorMessage.message}</div>}
-          {isOTPValid && <div className="text-green-500 font-semibold text-center p-2 mb-3">OTP Verified Successfully!</div>}
+          {errorMessage && (
+            <div className={`error-message text-center font-semibold p-2 mb-3 ${errorMessage.error || errorMessage.message ? "text-red-500" : "text-green-500"}`}>
+              {errorMessage.error || errorMessage.message || errorMessage}
+            </div>
+          )}
         </div>
+        <div>{isOTPValid && <div className="text-green-500 font-semibold text-center p-2 mb-3">OTP Verified Successfully!</div>}</div>
 
         <form onSubmit={handleSubmit} className="w-full max-w-sm">
           <div className="flex items-center justify-center gap-x-4 mb-5">

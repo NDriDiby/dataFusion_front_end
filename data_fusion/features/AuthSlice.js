@@ -14,17 +14,16 @@ export const createBackendInstance = (domain) => {
 export const login = createAsyncThunk("auth/login", async ({ email, password }, { rejectWithValue }) => {
   try {
     const loginData = { email, password };
-    console.log("loginData", loginData);
     const response = await backEnd.post("/user/login/", { email, password });
 
-    console.log("response", response.status);
+    // console.log("response", response.status);
     if (response.status === 200) {
-      console.log("response", response.data);
+      // console.log("response", response.data);
       // dispatch(sendOTP(email));
     }
 
     const { access_token, refresh_token, user } = response.data;
-    console.log("USER DATA:", access_token, refresh_token, user);
+    // console.log("USER DATA:", access_token, refresh_token, user);
 
     // Set header on successful registration
     backEnd.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
@@ -50,19 +49,8 @@ export const login = createAsyncThunk("auth/login", async ({ email, password }, 
       userID: user.id,
     };
   } catch (error) {
-    console.log("error", error.response.status);
+    // console.log("error", error.response.status);
     return rejectWithValue(error.toString());
-  }
-});
-
-// Some action file
-export const sendOTP = createAsyncThunk("auth/sendOTP", async (email, { rejectWithValue }) => {
-  try {
-    const response = await backEnd.post("/user/generate-otp/", { email });
-    console.log("OTP:", response.data);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(error.response.data);
   }
 });
 
