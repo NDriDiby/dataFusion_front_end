@@ -21,6 +21,17 @@ export const verifyOTP = async (email, otp) => {
   }
 };
 
+export const findUser = async (email) => {
+  try {
+    const response = await backEnd.get(`/user/users/?email=${email}`);
+    return response; // You can return the response or a specific part of it
+  } catch (error) {
+    // Handle error
+    // console.error("Error in sending OTP:", error);
+    throw error; // Re-throw the error if you want the calling function to handle it
+  }
+};
+
 export const salesData = async () => {
   try {
     const response = await backEnd.get("/sales");

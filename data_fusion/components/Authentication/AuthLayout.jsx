@@ -9,18 +9,18 @@ function AuthLayout({ children }) {
   return (
     <div className="flex flex-col lg:flex-row min-h-screen">
       <div className="flex flex-col w-full lg:w-3/5 bg-[#394592]">
-        <div className="flex justify-center items-center pt-8 lg:pt-12 ">
-          <Image src="/analyticAI_logo.png" width={250} height={100} alt="AnalyticAI Logo" />
+        <div className="flex justify-center items-center pt-8 lg:pt-12">
+          <Image style={{ objectFit: "contain" }} src="/analyticAI_logo.png" width={300} height={300} alt="AnalyticAI Logo" />
         </div>
 
         {/* Illustration */}
         {pathName == "/authentication/login" ? (
           <div className="flex justify-center items-center lg:pt-12 ">
-            <Image className="w-auto h-auto" src="/Login-image.png" width={500} height={100} alt="Login-image" />
+            <Image src="/Login-image.png" width={500} height={500} alt="Login-image" />
           </div>
         ) : (
           <div className="flex justify-center items-center lg:pt-12 ">
-            <Image src="/Enter OTP-image.png" width={500} height={100} alt="OTP-image" />
+            <Image priority={true} src="/Enter OTP-image.png" width={500} height={500} alt="OTP-image" />
           </div>
         )}
         {/* Illustration */}

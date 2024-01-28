@@ -110,7 +110,7 @@ function Login() {
                       </div>
 
                       <div className="mt-2 flex justify-end mb-2">
-                        <div className="text-gray-500 text-xs cursor-pointer text-semibold" onClick={() => setIsModalOpen(true)}>
+                        <div className="text-gray-500 text-xs cursor-pointer text-semibold" onClick={() => router.push("/authentication/forget-password/")}>
                           Forget Password?
                         </div>
                       </div>
