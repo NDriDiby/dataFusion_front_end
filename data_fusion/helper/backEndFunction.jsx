@@ -27,14 +27,21 @@ export const findUser = async (email) => {
     return response; // You can return the response or a specific part of it
   } catch (error) {
     // Handle error
-    // console.error("Error in sending OTP:", error);
-    throw error; // Re-throw the error if you want the calling function to handle it
+    console.log("Error in sending OTP:", error);
+    // Re-throw the error if you want the calling function to handle it
+    throw error;
   }
 };
 
-export const resetPassword = async (email, password) => {
+export const resetPassword = async (password, uid, token) => {
+  console.log("email, password, uidb64, token", password, uid, token);
+  const data = {
+    password: password,
+    uidb64: uid,
+    token: token,
+  };
   try {
-    const response = await backEnd.post(`/user/forget-password/`, { email, password });
+    const response = await backEnd.post(`/user/forget-password/`, data);
     return response; // You can return the response or a specific part of it
   } catch (error) {
     // Handle error
