@@ -1,6 +1,17 @@
 import React from "react";
 import Image from "next/image";
 
+let memcachedClient;
+
+if (typeof window === "undefined") {
+  // Dynamically import 'memjs' on the server side
+  const memjs = require("memjs");
+  memcachedClient = memjs.Client.create(process.env.MEMCACHIER_SERVERS, {
+    username: process.env.MEMCACHIER_USERNAME,
+    password: process.env.MEMCACHIER_PASSWORD,
+  });
+}
+
 export const renderIllustration = (pathName) => {
   switch (pathName) {
     case "/authentication/login":

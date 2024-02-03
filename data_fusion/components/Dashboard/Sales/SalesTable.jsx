@@ -6,10 +6,23 @@ import Spinner from "../../Spinner";
 import { FaEllipsisVertical, FaFilter, FaPlus, FaSquareXmark } from "react-icons/fa6";
 import { Button, Popover, PopoverHandler, PopoverContent } from "@material-tailwind/react";
 import ConfirmationModal from "@/components/ConfirmationModal";
+import { memcachedClient } from "@/helper/QuickFunction";
+import useSWR from "swr";
+
+// / Define a fetcher function that explicitly takes a URL and options
+const fetcher = (url, options) =>
+  fetch(url, options).then((res) => {
+    // Check if the response is ok (status in the range 200-299)
+    if (!res.ok) {
+      // Throw an error with the status text, which can be caught and handled by SWR
+      throw new Error(res.statusText);
+    }
+    return res.json();
+  });
 
 function SalesTable({ initialSalesData }) {
   // Example data - replace with your actual data source
-  const [data, setData] = useState(initialSalesData);
+  const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalConfirmationOpen, setIsModalConfirmationOpen] = useState(false);
@@ -26,23 +39,41 @@ function SalesTable({ initialSalesData }) {
 
   const columns = ["date", "product_category", "product_name", "actual_sales", "actual_units", "doc_name"]; // Columns
 
+  // Use the fetcher with useSWR, corrected endpoint, and proper destructuring
+  const { data: response, error } = useSWR("http://fullyai.localhost:8000/api/v1/sales/", fetcher);
+  // Update local state, ref, and manage loading state when the response changes
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setIsLoading(true); // Start loading
-        const response = await backEnd.get("/sales/");
-        setData(response.data);
-        originalDataRef.current = JSON.parse(JSON.stringify(response.data)); // Deep copy
-      } catch (error) {
-        console.log("Error in getting sales data", error);
-        // Optionally set an error state here
-      } finally {
-        setIsLoading(false); // Stop loading regardless of success or failure
-      }
-    };
+    setIsLoading(true); // Indicate loading started
 
-    fetchData();
-  }, []);
+    if (response) {
+      setData(response); // Update state with the new response
+      originalDataRef.current = JSON.parse(JSON.stringify(response)); // Update ref with a deep clone of the response
+      setIsLoading(false); // Indicate loading finished once data is set
+    }
+
+    // If there's an error, you may want to handle it here and also stop loading
+    if (error) {
+      console.error("Error fetching data:", error);
+      setIsLoading(false); // Indicate loading finished if an error occurs
+    }
+  }, [response, error]); // Depend on 'response' and 'error' to re-run the effect
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setIsLoading(true);
+  //     try {
+  //       const response = await backEnd.get("/sales/");
+  //       setData(response.data);
+  //       originalDataRef.current = JSON.parse(JSON.stringify(data));
+  //     } catch (error) {
+  //       console.error("Error in getting sales data:", error);
+  //     } finally {
+  //       setIsLoading(false);
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   // Modify this function to update editedCells state
   const handleCellChange = (e, rowIndex, column) => {
