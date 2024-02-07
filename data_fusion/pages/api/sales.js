@@ -1,5 +1,3 @@
-import { backEnd } from "@/features/AuthSlice";
-
 const memjs = require("memjs");
 const axios = require("axios"); // Assuming axios is used for HTTP requests
 
@@ -29,10 +27,8 @@ export default async function handler(req, res) {
 
   // Fetch data if not in cache
   try {
-    const response = await fetch("http://fullyai.localhost:8000/api/v1/sales/");
+    const response = await axios.get("http://fullyai.localhost:8000/api/v1/sales/");
     const data = response.data;
-
-    console.log("API DATA", data);
 
     // Cache the newly fetched data
     memcachedClient.set(cacheKey, JSON.stringify(data), { expires: 300 });

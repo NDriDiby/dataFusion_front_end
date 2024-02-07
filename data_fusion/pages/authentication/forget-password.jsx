@@ -77,6 +77,7 @@ function ForgetPassword() {
               Send email
             </button>
           </div>
+
           <div onClick={() => router.push("/authentication/login/")} className="text-center text-[#171D1C] text-xs cursor-pointer  mt-2 text-sm underline">
             Back to login
           </div>

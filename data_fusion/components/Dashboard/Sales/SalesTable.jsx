@@ -3,6 +3,7 @@ import { salesData } from "@/helper/backEndFunction";
 import React, { useState, useEffect, useRef } from "react";
 import CreateSaleModal from "./CreateSaleModal";
 import Spinner from "../../Spinner";
+import { useRouter } from "next/router";
 import { FaEllipsisVertical, FaFilter, FaPlus, FaSquareXmark } from "react-icons/fa6";
 import { Button, Popover, PopoverHandler, PopoverContent } from "@material-tailwind/react";
 import ConfirmationModal from "@/components/ConfirmationModal";
@@ -22,6 +23,7 @@ const fetcher = (url, options) =>
 
 function SalesTable({ initialSalesData }) {
   // Example data - replace with your actual data source
+  const router = useRouter();
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -41,6 +43,7 @@ function SalesTable({ initialSalesData }) {
 
   // Use the fetcher with useSWR, corrected endpoint, and proper destructuring
   const { data: response, error } = useSWR("http://fullyai.localhost:8000/api/v1/sales/", fetcher);
+
   // Update local state, ref, and manage loading state when the response changes
   useEffect(() => {
     setIsLoading(true); // Indicate loading started
